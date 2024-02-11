@@ -1,0 +1,37 @@
+<script>
+    import chaser_arrow from "$lib/assets/chaser_arrow.png";
+</script>
+
+<div class="flex flex-col h-screen items-center justify-center">
+    <div
+        class="border-2 border-solid border-black w-96 h-32 rounded-md bg-board-chaser"
+    >
+        
+    </div>
+
+    <div
+        class="border-2 border-solid border-black w-96 h-32 rounded-md bg-board-chaser"
+    >
+        <img alt="A chaser arrow" src={chaser_arrow} class="" />
+    </div>
+
+    <div
+        class="border-2 border-solid border-black w-96 h-32 rounded-md bg-board-contestant"
+    ></div>
+
+    <div
+        class="border-2 border-solid border-black w-96 h-32 rounded-md bg-board-empty"
+    ></div>
+
+    <div
+        class="border-2 border-solid border-black w-96 h-32 rounded-md bg-board-empty"
+    ></div>
+
+    <div
+        class="border-2 border-solid border-black w-96 h-32 rounded-md bg-board-empty"
+    ></div>
+
+    <div
+        class="border-2 border-solid border-black w-96 h-32 rounded-md bg-board-empty"
+    ></div>
+</div>
