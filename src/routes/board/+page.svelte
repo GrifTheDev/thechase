@@ -1,10 +1,11 @@
 <script lang="ts">
     import chaser_arrow from "$lib/assets/chaser_arrow.png";
+    import { onMount } from "svelte";
+    import { gameState } from "$lib/stores";
 
     let gameId: string;
     let apiRes: { err_code: number; err_info: string } | undefined;
     let loading = false
-
     async function sendIDAPI() {
         loading = true
         const res = await fetch("/api/start_game", {
@@ -16,7 +17,8 @@
         loading = false
     }
 </script>
-{#if Number(0) === 0}
+
+{#if Number($gameState) === -1}
     <div class="flex flex-col items-center text-center">
         <h1 class="text-3xl text-center w-96">
             Start the game by entering the game ID generated from the <a

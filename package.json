@@ -27,6 +27,7 @@
 		"@firebase/firestore": "^4.4.2",
 		"@sveltejs/adapter-node": "^4.0.1",
 		"dotenv": "^16.4.2",
-		"firebase": "^10.8.0"
+		"firebase": "^10.8.0",
+		"svelte-persisted-store": "^0.9.1"
 	}
 }
