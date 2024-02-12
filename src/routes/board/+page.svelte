@@ -1,8 +1,6 @@
 <script lang="ts">
     import chaser_arrow from "$lib/assets/chaser_arrow.png";
-    import { gameState } from "$lib/stores";
 
-    //let state = $gameState;
     let gameId: string;
     let apiRes: { err_code: number; err_info: string } | undefined;
     let loading = false
@@ -18,8 +16,7 @@
         loading = false
     }
 </script>
-{$gameState}
-{#if Number($gameState) === 0}
+{#if Number(0) === 0}
     <div class="flex flex-col items-center text-center">
         <h1 class="text-3xl text-center w-96">
             Start the game by entering the game ID generated from the <a
