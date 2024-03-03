@@ -18,6 +18,8 @@
     }
 </script>
 
+{$gameState}
+
 {#if Number($gameState) === -1}
     <div class="flex flex-col items-center text-center">
         <h1 class="text-3xl text-center w-96">

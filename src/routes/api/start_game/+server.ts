@@ -1,5 +1,5 @@
 import { log } from "$lib/logger.js";
-import { readDocData } from "$lib/server/database.js";
+import { readDocData } from "$lib/database.js";
 //import { json } from "@sveltejs/kit" return json(a+b)
 
 /** @type {import('./$types').RequestHandler} */
