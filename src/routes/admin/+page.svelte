@@ -1,65 +1,50 @@
-<script>
-    // @ts-nocheck
-    import { gameState } from "$lib/stores"
-    let response, firstGroupName, secondGroupName, thirdGroupName
+<script lang="ts">
+  import { doc, onSnapshot } from "@firebase/firestore";
+  import { getDB } from "$lib/firebase";
+  import { PUBLIC_GAMEID } from "$env/static/public";
+  import { changeGameState } from "$lib/utils";
+  let gameState = -2;
+  const { db } = getDB();
 
-     async function startGameRequest () {
-        const res = await fetch('/api/init_game', {
-            method: 'POST',
-            body: JSON.stringify({
-                firstGroupName: firstGroupName,
-                secondGroupName: secondGroupName,
-                thirdGroupName: thirdGroupName
-            })
-        })
+  onSnapshot(doc(db, "gameIDs", PUBLIC_GAMEID), (doc1) => {
+    //console.log(doc1.data());
+    gameState = doc1.data()!.gameState;
+    //console.log(gameState);
+  });
 
-        response = await res.json()
-    } 
-
-    
+  // @ts-ignore
+  export let response;
 </script>
 
-{#if Number($gameState) === -1}
-    <div class="flex flex-col items-center">
+{#if gameState === -1}
+  <div class="flex flex-col items-center">
+    <h1 class="text-3xl text-center w-96">
+      Game not started. Start it using the button below.
+    </h1>
 
-        <h1 class="text-3xl text-center w-96">
-            Game not started. Start it using the button below.
-        </h1>
-
-        <h2>First group name:</h2>
-        <input
-            name="id"
-            bind:value={firstGroupName}
-            autocomplete="off"
-            required
-            class="border-2 rounded-md border-black m-1"
-        /> <br />
-        <h2>Second group name:</h2>
-        <input
-            name="id"
-            bind:value={secondGroupName}
-            autocomplete="off"
-            required
-            class="border-2 rounded-md border-black m-1"
-        /> <br />
-        <h2>Third group name:</h2>
-        <input
-            name="id"
-            bind:value={thirdGroupName}
-            autocomplete="off"
-            required
-            class="border-2 rounded-md border-black m-1"
-        /> <br />
-
-        <button class="border border-black rounded-md p-1" on:click={startGameRequest}
-            >Start Game</button
-        >
-
-        {#if response?.err_code}
-            {response.err_info}
-        {/if}
-    </div>
+    <!-- <h2>First group name:</h2>
+    <input
+      name="id"
+      autocomplete="off"
+      required
+      class="border-2 rounded-md border-black m-1"
+    /> <br />
+    -->
+    <button
+      class="border border-black rounded-md p-1"
+      on:click={() => {
+        changeGameState(0);
+      }}>Start Game</button
+    >
+    <!-- // @ts-ignore
+    {#if response?.err_code}
+      {response.err_info}
+    {/if} -->
+  </div>
+{:else if gameState === 0}
+<div class="flex flex-col items-center">
+  <h1 class="text-3xl text-center w-96">Chaser1 Game Dashboard</h1>
+</div>
 {:else}
-    <p>Full dashboard</p>
+  <p>Loading...</p>
 {/if}
-

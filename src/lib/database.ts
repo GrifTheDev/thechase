@@ -1,4 +1,4 @@
-import { doc, getDoc } from "@firebase/firestore"
+import { doc, getDoc, updateDoc } from "@firebase/firestore"
 import { getDB } from "./firebase"
 
 const { db } = getDB()
@@ -13,4 +13,14 @@ async function readDocData(collection: string, docID: string) {
     return docData
 }
 
-export {readDocData}
+async function updateDocData(collection: string, docID: string, toWrite: any) {
+    if (collection == "") collection = "null"
+    if (docID == "") docID = "null"
+
+
+    const docRef = doc(db, collection, docID)
+    const docData = await updateDoc(docRef, toWrite) 
+    return docData
+}
+
+export {readDocData, updateDocData}

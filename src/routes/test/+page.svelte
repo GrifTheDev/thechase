@@ -5,7 +5,7 @@
     const { db } = getDB()
     let thingy = ""
     const sub = onSnapshot(doc(db, "gameIDs", "hziydQCTfw7b"), (doc1) => {
-        console.log(doc1.data())
+        //console.log(doc1.data())
     } )
     
     
