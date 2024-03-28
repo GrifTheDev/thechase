@@ -9,11 +9,7 @@
   onSnapshot(doc(db, "gameIDs", PUBLIC_GAMEID), (doc1) => {
     //console.log(doc1.data());
     gameState = doc1.data()!.gameState;
-    //console.log(gameState);
   });
-
-  // @ts-ignore
-  export let response;
 </script>
 
 {#if gameState === -1}
@@ -42,9 +38,35 @@
     {/if} -->
   </div>
 {:else if gameState === 0}
-<div class="flex flex-col items-center">
-  <h1 class="text-3xl text-center w-96">Chaser1 Game Dashboard</h1>
-</div>
+  <div class="flex flex-col items-center">
+    <h1 class="text-3xl text-center font-bold w-100">
+      Chase Sequence ({gameState + 1}) - Admin Dashboard
+    </h1>
+    <div class="w-screen h-3"></div>
+    <!-- Devider -->
+
+    <h2 class="text-xl">Chaser/Contestant Position Controls</h2>
+    <div class="flex flex-row items-center">
+      
+
+      <button class="border border-black rounded-md p-1" on:click={() => {}}
+        >+</button
+      >
+      <p class="w-20">Contestant</p>
+      <button class="border border-black rounded-md p-1" on:click={() => {}}
+        >-</button
+      >
+      <div class="w-2 h-3"></div>  
+      <button class="border border-black rounded-md p-1" on:click={() => {}}
+        >+</button
+      >
+      <p>Chaser</p>
+      <button class="border border-black rounded-md p-1" on:click={() => {}}
+        >-</button
+      >
+
+    </div>
+  </div>
 {:else}
   <p>Loading...</p>
 {/if}
