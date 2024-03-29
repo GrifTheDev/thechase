@@ -2,19 +2,27 @@
   import { doc, onSnapshot } from "@firebase/firestore";
   import { getDB } from "$lib/firebase";
   import { PUBLIC_GAMEID } from "$env/static/public";
+
   let gameState = -2;
   let questionState = -1;
-  //let countContestant = -1;
-  //let countChaser = -1;
+  let answerA = ""
+  let answerB = ""
+  let answerC = ""
+  let correctAnswer = ""
+  let difficulty = -1
+  let question = ""
 
   const { db } = getDB();
 
   onSnapshot(doc(db, "gameIDs", PUBLIC_GAMEID), (doc1) => {
-    //console.log(doc1.data());
     gameState = doc1.data()!.gameState;
     questionState = doc1.data()!.questionState;
-    //countContestant = doc1.data()!.countContestant;
-    //countChaser = doc1.data()!.countChaser;
+    answerA = doc1.data()!.currentQuestion.answerA
+    answerB = doc1.data()!.currentQuestion.answerB
+    answerC = doc1.data()!.currentQuestion.answerC
+    correctAnswer = doc1.data()!.currentQuestion.correctAnswer
+    difficulty = doc1.data()!.currentQuestion.difficulty
+    question = doc1.data()!.currentQuestion.question
   });
 </script>
 
@@ -52,25 +60,23 @@
       <div
         class="flex flex-col h-48 items-center justify-center border-8 border-solid border-white rounded-2xl text-center text-white text-3xl w-4/5 bg-gradient-to-b from-question-bg-start to-question-bg-end"
       >
-        This is a question, a rather long one as it would appear, how is it
-        gonna be oh that is interesting, lets add some more yeah sure lets add
-        more okay a bit more a bit bit moreaaaaaa
+        {question}
       </div>
       <div class="flex flex-row items-start w-3/4 justify-between space-x-3">
         <div
           class="flex flex-col justify-center border-2 border-solid border-white rounded-md rounded-t-none text-center text-white text-3xl w-1/3 h-12 bg-gradient-to-b from-question-answer-popout-start to-question-answer-popout-end"
         >
-          A Odg
+          A {answerA}
         </div>
         <div
           class="flex flex-col justify-center border-2 border-solid border-white rounded-md rounded-t-none text-center text-white text-3xl w-1/3 h-12 bg-gradient-to-b from-question-answer-popout-start to-question-answer-popout-end"
         >
-          B Odg
+          B {answerB}
         </div>
         <div
           class="flex flex-col justify-center border-2 border-solid border-white rounded-md rounded-t-none text-center text-white text-3xl w-1/3 h-12 bg-gradient-to-b from-question-answer-popout-start to-question-answer-popout-end"
         >
-          C Odg
+          C {answerC}
         </div>
       </div>
     </div>

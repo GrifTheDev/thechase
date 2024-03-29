@@ -7,6 +7,12 @@
   let countContestant = -1;
   let countChaser = -1;
   let questionState = -1;
+  let answerA = ""
+  let answerB = ""
+  let answerC = ""
+  let correctAnswer = ""
+  let difficulty = -1
+  let question = ""
 
   const { db } = getDB();
 
@@ -16,6 +22,12 @@
     countContestant = doc1.data()!.countContestant;
     countChaser = doc1.data()!.countChaser;
     questionState = doc1.data()!.questionState;
+    answerA = doc1.data()!.currentQuestion.answerA
+    answerB = doc1.data()!.currentQuestion.answerB
+    answerC = doc1.data()!.currentQuestion.answerC
+    correctAnswer = doc1.data()!.currentQuestion.correctAnswer
+    difficulty = doc1.data()!.currentQuestion.difficulty
+    question = doc1.data()!.currentQuestion.question
   });
 </script>
 
@@ -52,6 +64,8 @@
             changeQuestionState(1)
           }}>Next Question</button
         >
+      {:else}
+        <p class="font-bold text-white">Current Question: {question}</p>
       {/if}
     </div>
 

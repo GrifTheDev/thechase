@@ -34,7 +34,6 @@ async function setChaserPos(newPos: number) {
 
 async function changeQuestionState(newState: number) {
   if (newState > 1 || newState < 0) return {code: 400, message: `Max Length Exceeded`}
-  if(newState === 1) await assignNewQuestion()
 
   await fetch("/api/question_state_change", {
     method: "POST",
@@ -43,10 +42,5 @@ async function changeQuestionState(newState: number) {
     }),
   });
 }
-
-async function assignNewQuestion() {
-  const {question, answerA, answerB, answerC, correctAnswer, difficulty} = questionList[Math.floor(Math.random() * questionList.length)]
-}
-
 
 export {changeGameState, setContestantPos, setChaserPos, changeQuestionState}
