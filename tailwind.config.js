@@ -6,7 +6,15 @@ export default {
       colors: {
         "board-chaser": '#ff0000',
         "board-contestant": '#00b3cd',
-        "board-empty": '#00025b'
+        "board-empty": '#00025b',
+        "question-bg-start": "#1c4eb5",
+        "question-bg-end": "#001750",
+        "question-contestant-popout-start": "#66a4aa",
+        "question-contestant-popout-end": "#2c757c",
+        "question-chaser-popout-start": "#b50000",
+        "question-chaser-popout-end": "#e8090c",
+        "question-answer-popout-start": "#52667a",
+        "question-answer-popout-end": "#11253a",
       },
     },
   },

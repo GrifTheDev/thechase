@@ -39,7 +39,7 @@ Debug: gameState = {gameState}
     > -->
   </div>
 {:else if gameState === 0}
-  <div class="flex flex-col h-screen items-center justify-center">
+  <div class="flex flex-col h-screen items-center justify-center bg-slate-500">
     {#each Array(countChaser).fill(0) as item, i}
       {#if countChaser - 1 == i}
         <div
@@ -79,27 +79,6 @@ Debug: gameState = {gameState}
         class="border-2 border-solid border-black w-96 h-32 rounded-md bg-board-empty"
       ></div>
     {/each}
-
-    <!-- <div
-      class="border-2 border-solid border-black w-96 h-32 rounded-md bg-board-chaser"
-    ></div>
-
-    <div
-      class="border-2 border-solid border-black w-96 h-32 rounded-md bg-board-chaser"
-    >
-      <img alt="A chaser arrow" src={chaser_arrow} class="" />
-    </div> -->
-
-    <!-- <div
-      class="border-2 border-solid border-black w-96 h-32 rounded-md bg-board-empty"
-    ></div>
-
-    <div
-      class="border-2 border-solid border-black w-96 h-32 rounded-md bg-board-empty"
-    ></div>
-    <div
-      class="border-2 border-solid border-black w-96 h-32 rounded-md bg-board-empty"
-    ></div> -->
   </div>
 {:else}
   <p>Loading...</p>
