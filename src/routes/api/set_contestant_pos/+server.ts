@@ -5,9 +5,8 @@ import { PUBLIC_GAMEID } from "$env/static/public";
 
 /** @type {import('./$types').RequestHandler} */
 export async function POST({ request }) {
-  let { gameState } = await request.json();
-  gameState = Number(gameState);
-  await updateDocData("gameIDs", PUBLIC_GAMEID, {gameState: gameState})
+  let { newPosition } = await request.json();
+  await updateDocData("gameIDs", PUBLIC_GAMEID, {countContestant: newPosition})
 
   return new Response(JSON.stringify({ code: 200, message: "Success" }));
 }

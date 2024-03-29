@@ -2,7 +2,7 @@
   import chaser_arrow from "$lib/assets/chaser_arrow.png";
   import { doc, onSnapshot } from "@firebase/firestore";
   import { getDB } from "$lib/firebase";
-  import { PUBLIC_GAMEID } from "$env/static/public";
+  import { PUBLIC_GAMEID, PUBLIC_MAX_BOARD_LEN } from "$env/static/public";
 
   let apiRes: { err_code: number; err_info: string } | undefined;
   const { db } = getDB();
@@ -19,9 +19,9 @@
     gameState = doc1.data()!.gameState;
     countContestant = doc1.data()!.countContestant;
     countChaser = doc1.data()!.countChaser;
-    remainder = 6 - countContestant;
-    console.log(gameState, countContestant, countChaser, remainder);
-    console.log(countContestant - countChaser);
+    remainder = Number(PUBLIC_MAX_BOARD_LEN) - countContestant;
+   /*  console.log(gameState, countContestant, countChaser, remainder);
+    console.log(countContestant - countChaser); */
   });
 </script>
 
