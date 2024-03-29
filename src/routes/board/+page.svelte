@@ -25,19 +25,17 @@
   });
 </script>
 
-Debug: gameState = {gameState}
-
 {#if gameState === -1}
-  <div class="flex flex-col items-center text-center">
-    <h1 class="text-3xl text-center w-96">
-      Start the game by pressing the button on the admin panel.
-    </h1>
-    <!-- <button
-      type="submit"
-      class="border border-black p-2 mt-2 rounded-lg"
-      >Submit</button
-    > -->
-  </div>
+<div
+class="flex flex-col h-screen items-center justify-center bg-slate-500"
+>
+<h1 class="text-3xl font-bold text-center w-96 text-white">
+BOARD PANEL
+</h1>
+<h1 class="text-3xl text-center w-96 text-white">
+  Game not started. Start the game by pressing the button on the admin panel.
+</h1>
+</div>
 {:else if gameState === 0}
   <div class="flex flex-col h-screen items-center justify-center bg-slate-500">
     {#each Array(countChaser).fill(0) as item, i}

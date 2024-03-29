@@ -1,4 +1,5 @@
 import { PUBLIC_MAX_BOARD_LEN } from "$env/static/public";
+import { questionList } from "./assets/questions";
 
 async function changeGameState(newState: number) {
     await fetch("/api/game_state_change", {
@@ -31,5 +32,21 @@ async function setChaserPos(newPos: number) {
   });
 }
 
+async function changeQuestionState(newState: number) {
+  if (newState > 1 || newState < 0) return {code: 400, message: `Max Length Exceeded`}
+  if(newState === 1) await assignNewQuestion()
 
-export {changeGameState, setContestantPos, setChaserPos}
+  await fetch("/api/question_state_change", {
+    method: "POST",
+    body: JSON.stringify({
+      newState: newState
+    }),
+  });
+}
+
+async function assignNewQuestion() {
+  const {question, answerA, answerB, answerC, correctAnswer, difficulty} = questionList[Math.floor(Math.random() * questionList.length)]
+}
+
+
+export {changeGameState, setContestantPos, setChaserPos, changeQuestionState}
