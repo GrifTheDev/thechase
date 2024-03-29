@@ -2,17 +2,22 @@
   import { doc, onSnapshot } from "@firebase/firestore";
   import { getDB } from "$lib/firebase";
   import { PUBLIC_GAMEID } from "$env/static/public";
-  import { changeGameState, changeQuestionState, setChaserPos, setContestantPos } from "$lib/utils";
+  import {
+    changeGameState,
+    changeQuestionState,
+    setChaserPos,
+    setContestantPos,
+  } from "$lib/utils";
   let gameState = -2;
   let countContestant = -1;
   let countChaser = -1;
   let questionState = -1;
-  let answerA = ""
-  let answerB = ""
-  let answerC = ""
-  let correctAnswer = ""
-  let difficulty = -1
-  let question = ""
+  let answerA = "";
+  let answerB = "";
+  let answerC = "";
+  let correctAnswer = "";
+  let difficulty = -1;
+  let question = "";
 
   const { db } = getDB();
 
@@ -22,12 +27,12 @@
     countContestant = doc1.data()!.countContestant;
     countChaser = doc1.data()!.countChaser;
     questionState = doc1.data()!.questionState;
-    answerA = doc1.data()!.currentQuestion.answerA
-    answerB = doc1.data()!.currentQuestion.answerB
-    answerC = doc1.data()!.currentQuestion.answerC
-    correctAnswer = doc1.data()!.currentQuestion.correctAnswer
-    difficulty = doc1.data()!.currentQuestion.difficulty
-    question = doc1.data()!.currentQuestion.question
+    answerA = doc1.data()!.currentQuestion.answerA;
+    answerB = doc1.data()!.currentQuestion.answerB;
+    answerC = doc1.data()!.currentQuestion.answerC;
+    correctAnswer = doc1.data()!.currentQuestion.correctAnswer;
+    difficulty = doc1.data()!.currentQuestion.difficulty;
+    question = doc1.data()!.currentQuestion.question;
   });
 </script>
 
@@ -47,30 +52,58 @@
   </div>
 {:else if gameState === 0}
   <div class="flex flex-col h-screen items-center bg-stone-500">
-    <h1 class="text-3xl text-center font-bold w-100 text-white">
+    <h1 class="text-4xl text-center font-bold w-100 text-white">
       Chase Sequence ({gameState + 1}) - Admin Dashboard
     </h1>
     <div class="w-screen h-3"></div>
     <!-- Devider -->
 
     <div class="flex flex-col items-center">
-      <h2 class="text-xl text-white">Question Controls</h2>
       {#if questionState === 0}
+      <h2 class="text-2xl text-white text-center font-bold">Question Controls</h2>
         <p class="text-white">No question currently active.</p>
 
         <button
           class="border border-white text-white rounded-md p-1"
           on:click={async () => {
-            changeQuestionState(1)
+            changeQuestionState(1);
           }}>Next Question</button
         >
       {:else}
-        <p class="font-bold text-white">Current Question: {question}</p>
+      <div class="flex flex-col w-screen justify-center px-32 border-2 border-white rounded-xl">
+        <h2 class="text-2xl text-white text-center font-bold">Question Controls</h2>
+        <div class="flex flex-row justify-center text-center">
+          <p class="text-white text-xl">
+            <span class="font-bold">Current Question: </span>{question}
+          </p>
+        </div>
+        <div class="flex flex-row justify-between">
+          <p class="text-white text-xl">
+            <span class="font-bold">A: </span>{answerA}
+          </p>
+          <p class="text-white text-xl">
+            <span class="font-bold">B: </span>{answerB}
+          </p>
+          <p class="text-white text-xl">
+            <span class="font-bold">C: </span>{answerC}
+          </p>
+        </div>
+        <div class="flex flex-row justify-center">
+          <p class="text-white text-xl">
+            <span class="font-bold">Correct Answer: </span>{correctAnswer}
+          </p>
+        </div>
+        <div class="flex flex-row justify-center">
+          <p class="text-white text-xl">
+            <span class="font-bold">Question Difficulty: </span>{difficulty}
+          </p>
+        </div>
+      </div>
       {/if}
     </div>
 
     <div class="w-screen h-3"></div>
-    <h2 class="text-xl text-white">Chaser/Contestant Position Controls</h2>
+    <h2 class="text-2xl text-white">Chaser/Contestant Position Controls</h2>
     <div class="flex flex-row items-center">
       <button
         class="border border-white text-white rounded-md p-1"
