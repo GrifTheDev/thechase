@@ -16,6 +16,15 @@ export default {
         "question-answer-popout-start": "#52667a",
         "question-answer-popout-end": "#11253a",
       },
+      keyframes: {
+        slideIn: {
+          "0%": { transform: "translateY(100%)" },
+          "100%": { transform: "translateY(0)" }
+        }
+      },
+      animation: {
+        slideIn: "slideIn .25s ease-in-out forwards"
+      }
     },
   },
   plugins: [],
