@@ -16,17 +16,22 @@ export default {
         "question-answer-popout-start": "#52667a",
         "question-answer-popout-end": "#11253a",
         "label-correct-answer-start": "#34eb58",
-        "label-correct-answer-end": "#125711"
+        "label-correct-answer-end": "#125711",
       },
       keyframes: {
         slideIn: {
           "0%": { transform: "translateY(100%)" },
           "100%": { transform: "translateY(0)" }
+        },
+        fadeIn: {
+          "0%": {opacity: 0},
+          "100%": {opacity: 100}
         }
       },
       animation: {
-        slideIn: "slideIn .25s ease-in-out forwards"
-      }
+        slideIn: "slideIn .25s ease-in-out forwards",
+        fadeIn: "fadeIn .75s ease-in forwards"
+      },
     },
   },
   plugins: [],

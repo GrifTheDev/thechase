@@ -199,14 +199,14 @@
       {/if}
     </div>
 
-    {#if contestantAnswer == true && chaserAnswer == true}
+    {#if contestantAnswer == true && chaserAnswer == true && questionState > 0}
     <h2 class="text-2xl text-white font-bold">Advance Answer Show</h2>
     <div class="flex flex-row items-center"> 
       <button
           class="border border-white text-white rounded-md p-1"
           on:click={async () => {
             changeQuestionState(questionState+1);
-          }}>{advanceQuestionShowLabel[questionState]}</button
+          }}>{advanceQuestionShowLabel[questionState] || "Whoops"}</button
         >
     </div>
     {/if}

@@ -35,12 +35,40 @@ async function setChaserPos(newPos: number) {
 }
 
 async function changeQuestionState(newState: number) {
-  await fetch("/api/question_state_change", {
-    method: "POST",
-    body: JSON.stringify({
-      newState: newState,
-    }),
-  });
+
+  if (newState > 4) {
+    await fetch("/api/reset_question_round", {
+      method: "POST",
+      body: JSON.stringify({
+        // TODO: Delegate this behaviour to env. I know I wrote that I will add auth later but it feels wrong to have such an important path exposed with no auth.
+        auth: "this123is123a123password",
+      }),
+    });
+  } else if (newState == 3 || newState == 4) {
+    await fetch("/api/advance_board", {
+      method: "POST",
+      body: JSON.stringify({
+        // TODO: Delegate this behaviour to env. I know I wrote that I will add auth later but it feels wrong to have such an important path exposed with no auth.
+        auth: "this123is123a123password",
+        questionState: newState
+      }),
+    });
+    await fetch("/api/question_state_change", {
+      method: "POST",
+      body: JSON.stringify({
+        newState: newState,
+      }),
+    });
+  } else {
+    await fetch("/api/question_state_change", {
+      method: "POST",
+      body: JSON.stringify({
+        newState: newState,
+      }),
+    });
+  }
+
+  
 }
 
 async function submitContestantAnswer(answer: string) {
