@@ -3,8 +3,10 @@
   import { getDB } from "$lib/firebase";
   import { PUBLIC_GAMEID } from "$env/static/public";
   import {
+  advanceGameNextTeam,
     changeGameState,
     changeQuestionState,
+    changeSlideOut,
     setChaserPos,
     setContestantPos,
   } from "$lib/utils";
@@ -23,7 +25,15 @@
   let chaserAnswerValue = "";
   let contestantAnswerValue = "";
   let answerSheet: any = {};
-  let advanceQuestionShowLabel: any = {1: "Show Contestant Answer", 2: "Show Correct Answer", 3: "Show Chaser Answer", 4: "Next Question"}
+  let advanceQuestionShowLabel: any = {
+    1: "Show Contestant Answer",
+    2: "Show Correct Answer",
+    3: "Show Chaser Answer",
+    4: "Next Question",
+  };
+  let questionSlidOut = false;
+  let chaserVictory = false;
+  let contestantVictory = false;
 
   const { db } = getDB();
 
@@ -43,6 +53,9 @@
     chaserAnswer = doc1.data()!.chaserAnswer;
     chaserAnswerValue = doc1.data()!.chaserAnswerValue;
     contestantAnswerValue = doc1.data()!.contestantAnswerValue;
+    questionSlidOut = doc1.data()!.questionSlidOut;
+    chaserVictory = doc1.data()!.chaserVictory;
+    contestantVictory = doc1.data()!.contestantVictory;
 
     answerSheet = { A: answerA, B: answerB, C: answerC };
   });
@@ -62,7 +75,7 @@
       }}>Start Game</button
     >
   </div>
-{:else if gameState === 0}
+{:else if gameState > -1 && gameState < 3}
   <div class="flex flex-col h-screen items-center bg-stone-500">
     <h1 class="text-4xl text-center font-bold w-100 text-white">
       Chase Sequence ({gameState + 1}) - Admin Dashboard
@@ -70,6 +83,14 @@
     <div class="w-screen h-3"></div>
     <!-- Devider -->
 
+    {#if chaserVictory == true || contestantVictory == true}
+    <button
+          class="border border-white text-white rounded-md p-1"
+          on:click={async () => {
+            advanceGameNextTeam();
+          }}>Start Game for Next Team</button
+        >
+    {:else}
     <div class="flex flex-col items-center">
       {#if questionState === 0}
         <h2 class="text-2xl text-white text-center font-bold">
@@ -116,6 +137,14 @@
               <span class="font-bold">Question Difficulty: </span>{difficulty}
             </p>
           </div>
+          {#if questionSlidOut == false}
+            <button
+              class="border border-white text-white rounded-md p-1 mx-1 mb-1"
+              on:click={async () => {
+                changeSlideOut(true);
+              }}>Slide Out Answers</button
+            >
+          {/if}
         </div>
       {/if}
     </div>
@@ -200,17 +229,19 @@
     </div>
 
     {#if contestantAnswer == true && chaserAnswer == true && questionState > 0}
-    <h2 class="text-2xl text-white font-bold">Advance Answer Show</h2>
-    <div class="flex flex-row items-center"> 
-      <button
+      <h2 class="text-2xl text-white font-bold">Advance Answer Show</h2>
+      <div class="flex flex-row items-center">
+        <button
           class="border border-white text-white rounded-md p-1"
           on:click={async () => {
-            changeQuestionState(questionState+1);
+            changeQuestionState(questionState + 1);
           }}>{advanceQuestionShowLabel[questionState] || "Whoops"}</button
         >
-    </div>
+      </div>
+    {/if}
     {/if}
   </div>
+  
 {:else}
   <p>Loading...</p>
 {/if}

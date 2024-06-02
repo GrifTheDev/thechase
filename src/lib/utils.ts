@@ -99,6 +99,23 @@ async function submitChaserAnswer(answer: string) {
   });
 }
 
+async function changeSlideOut(value: boolean) {
+  await fetch("/api/change_slide_out", {
+    method: "POST",
+    body: JSON.stringify({ newValue: value }),
+  });
+}
+
+async function advanceGameNextTeam() {
+  await fetch("/api/advance_game_next_team", {
+    method: "POST",
+    body: JSON.stringify({
+      // TODO: Delegate this behaviour to env. I know I wrote that I will add auth later but it feels wrong to have such an important path exposed with no auth.
+      auth: "this123is123a123password",
+    }),
+  });
+}
+
 export {
   changeGameState,
   setContestantPos,
@@ -106,4 +123,6 @@ export {
   changeQuestionState,
   submitContestantAnswer,
   submitChaserAnswer,
+  changeSlideOut,
+  advanceGameNextTeam
 };

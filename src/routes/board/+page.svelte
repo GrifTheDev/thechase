@@ -13,6 +13,8 @@
   let countContestant = -1;
   let countChaser = -1;
   let remainder = -1;
+  let chaserVictory = false;
+  let contestantVictory = false;
 
   onSnapshot(doc(db, "gameIDs", PUBLIC_GAMEID), (doc1) => {
     //console.log(doc1.data());
@@ -20,64 +22,77 @@
     countContestant = doc1.data()!.countContestant;
     countChaser = doc1.data()!.countChaser;
     remainder = Number(PUBLIC_MAX_BOARD_LEN) - countContestant;
-   /*  console.log(gameState, countContestant, countChaser, remainder);
+    chaserVictory = doc1.data()!.chaserVictory;
+    contestantVictory = doc1.data()!.contestantVictory;
+    /*  console.log(gameState, countContestant, countChaser, remainder);
     console.log(countContestant - countChaser); */
   });
 </script>
 
 {#if gameState === -1}
-<div
-class="flex flex-col h-screen items-center justify-center bg-slate-500"
->
-<h1 class="text-3xl font-bold text-center w-96 text-white">
-BOARD PANEL
-</h1>
-<h1 class="text-3xl text-center w-96 text-white">
-  Game not started. Start the game by pressing the button on the admin panel.
-</h1>
-</div>
-{:else if gameState === 0}
   <div class="flex flex-col h-screen items-center justify-center bg-slate-500">
-    {#each Array(countChaser).fill(0) as item, i}
-      {#if countChaser - 1 == i}
-        <div
-          class="border-2 border-solid border-black w-96 h-32 rounded-md bg-board-chaser"
-        >
-          <img alt="A chaser arrow" src={chaser_arrow} class="" />
-        </div>
-      {:else}
-        <div
-          class="border-2 border-solid border-black w-96 h-32 rounded-md bg-board-chaser"
-        ></div>
-      {/if}
-    {/each}
-
-    {#each Array(countContestant - countChaser).fill(0) as item, i}
-      {#if countContestant - countChaser - 1 == i}
-        <div
-          class="border-2 border-solid border-black w-96 h-32 rounded-md bg-board-contestant"
-        >
-          <div class="flex flex-row h-32 items-center justify-center text-center text-5xl text-white drop-shadow-xl font-bold">
-            <div class="h-14">
-              ➤ TIM {gameState + 1}
-              
-            </div>
-            <p class="rotate-180">➤</p>
-          </div>
-        </div>
-      {:else}
-        <div
-          class="border-2 border-solid border-black w-96 h-32 rounded-md bg-board-contestant"
-        ></div>
-      {/if}
-    {/each}
-
-    {#each Array(remainder).fill(0) as item, i}
-      <div
-        class="border-2 border-solid border-black w-96 h-32 rounded-md bg-board-empty"
-      ></div>
-    {/each}
+    <h1 class="text-3xl font-bold text-center w-96 text-white">BOARD PANEL</h1>
+    <h1 class="text-3xl text-center w-96 text-white">
+      Game not started. Start the game by pressing the button on the admin
+      panel.
+    </h1>
   </div>
+{:else if gameState > -1 && gameState < 3}
+  {#if contestantVictory == true}
+
+  <div class="flex flex-col h-screen items-center justify-center bg-board-contestant animate-slideIn">
+    <h1 class="text-4xl font-bold text-center w-96 text-white animate-pulse">Tim {gameState+1} je pobijedio!</h1>
+  </div>
+  {:else if chaserVictory == true}
+  <div class="flex flex-col h-screen items-center justify-center bg-board-chaser animate-slideIn">
+    <h1 class="text-4xl font-bold text-center w-96 text-white animate-pulse">Lovkinje su pobijedile!</h1>
+  </div>
+  {:else}
+    <div
+      class="flex flex-col h-screen items-center justify-center bg-slate-500"
+    >
+      {#each Array(countChaser).fill(0) as item, i}
+        {#if countChaser - 1 == i}
+          <div
+            class="border-2 border-solid border-black w-96 h-32 rounded-md bg-board-chaser"
+          >
+            <img alt="A chaser arrow" src={chaser_arrow} class="" />
+          </div>
+        {:else}
+          <div
+            class="border-2 border-solid border-black w-96 h-32 rounded-md bg-board-chaser"
+          ></div>
+        {/if}
+      {/each}
+
+      {#each Array(countContestant - countChaser).fill(0) as item, i}
+        {#if countContestant - countChaser - 1 == i}
+          <div
+            class="border-2 border-solid border-black w-96 h-32 rounded-md bg-board-contestant"
+          >
+            <div
+              class="flex flex-row h-32 items-center justify-center text-center text-5xl text-white drop-shadow-xl font-bold"
+            >
+              <div class="h-14">
+                ➤ TIM {gameState + 1}
+              </div>
+              <p class="rotate-180">➤</p>
+            </div>
+          </div>
+        {:else}
+          <div
+            class="border-2 border-solid border-black w-96 h-32 rounded-md bg-board-contestant"
+          ></div>
+        {/if}
+      {/each}
+
+      {#each Array(remainder).fill(0) as item, i}
+        <div
+          class="border-2 border-solid border-black w-96 h-32 rounded-md bg-board-empty"
+        ></div>
+      {/each}
+    </div>
+  {/if}
 {:else}
   <p>Loading...</p>
 {/if}

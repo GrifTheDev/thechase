@@ -6,18 +6,11 @@ import type { RequestHandler } from "./$types";
 //import { json } from "@sveltejs/kit" return json(a+b)
 
 export const POST: RequestHandler = async({ request }) => {
-  const { auth } = await request.json();
-
-  if (auth != "this123is123a123password") return new Response(JSON.stringify({ code: 403, message: "Forbidden" }))
+  const { newValue } = await request.json();
   
 
   await updateDocData("gameIDs", PUBLIC_GAMEID, {
-    questionState: 0,
-    chaserAnswer: false,
-    contestantAnswer: false,
-    questionSlidOut: false,
-    contestantVictory: false,
-    chaserVictory: false
+    questionSlidOut: newValue
   });
 
   return new Response(JSON.stringify({ code: 200, message: "Success" }));

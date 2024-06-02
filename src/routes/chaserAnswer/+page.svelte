@@ -16,6 +16,7 @@
     let chaserAnswer = false;
     let answerSheet: any = {}
     let chaserAnswerValue: string = ""
+    let questionSlidOut = false
   
     const { db } = getDB();
   
@@ -31,6 +32,7 @@
       contestantAnswer = doc1.data()!.contestantAnswer;
       chaserAnswer = doc1.data()!.chaserAnswer;
       chaserAnswerValue = doc1.data()!.chaserAnswerValue;
+      questionSlidOut = doc1.data()!.questionSlidOut
 
       answerSheet = {A: answerA, B: answerB, C: answerC}
     });
@@ -39,13 +41,13 @@
   </script>
   
   <div class="bg-board-empty flex flex-col h-screen overflow-hidden">
-    {#if questionState == 0}
+    {#if questionState == 0 || questionSlidOut == false}
       <div class="flex flex-col h-screen items-center justify-center">
         <h1 class="text-3xl font-bold text-center w-96 text-white">
           CHASER ANSWER PANEL
         </h1>
         <h1 class="text-3xl text-center w-96 text-white">
-          No current question. Please wait for the host to queue a question.
+          No current question. Please wait for the host to queue a question or reveal the answers.
         </h1>
       </div>
       <!--prettier-ignore-->

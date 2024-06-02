@@ -6,18 +6,24 @@ import type { RequestHandler } from "./$types";
 //import { json } from "@sveltejs/kit" return json(a+b)
 
 export const POST: RequestHandler = async({ request }) => {
-  const { auth } = await request.json();
+    const { auth } = await request.json();
 
-  if (auth != "this123is123a123password") return new Response(JSON.stringify({ code: 403, message: "Forbidden" }))
-  
+    if (auth != "this123is123a123password") return new Response(JSON.stringify({ code: 403, message: "Forbidden" }))
+    const currentData = await readDocData("gameIDs", PUBLIC_GAMEID);
+    // @ts-ignore
+    const { gameState } =
+      currentData
 
   await updateDocData("gameIDs", PUBLIC_GAMEID, {
-    questionState: 0,
     chaserAnswer: false,
     contestantAnswer: false,
-    questionSlidOut: false,
+    chaserVictory: false,
     contestantVictory: false,
-    chaserVictory: false
+    countChaser: 0,
+    countContestant: 2,
+    gameState: gameState + 1,
+    questionSlidOut: false,
+    questionState: 0
   });
 
   return new Response(JSON.stringify({ code: 200, message: "Success" }));
