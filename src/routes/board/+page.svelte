@@ -15,6 +15,7 @@
   let remainder = -1;
   let chaserVictory = false;
   let contestantVictory = false;
+  let finalChaseSteps = 25;
 
   onSnapshot(doc(db, "gameIDs", PUBLIC_GAMEID), (doc1) => {
     //console.log(doc1.data());
@@ -39,14 +40,21 @@
   </div>
 {:else if gameState > -1 && gameState < 3}
   {#if contestantVictory == true}
-
-  <div class="flex flex-col h-screen items-center justify-center bg-board-contestant animate-slideIn">
-    <h1 class="text-4xl font-bold text-center w-96 text-white animate-pulse">Tim {gameState+1} je pobijedio!</h1>
-  </div>
+    <div
+      class="flex flex-col h-screen items-center justify-center bg-board-contestant animate-slideIn"
+    >
+      <h1 class="text-4xl font-bold text-center w-96 text-white animate-pulse">
+        Tim {gameState + 1} je pobijedio!
+      </h1>
+    </div>
   {:else if chaserVictory == true}
-  <div class="flex flex-col h-screen items-center justify-center bg-board-chaser animate-slideIn">
-    <h1 class="text-4xl font-bold text-center w-96 text-white animate-pulse">Lovkinje su pobijedile!</h1>
-  </div>
+    <div
+      class="flex flex-col h-screen items-center justify-center bg-board-chaser animate-slideIn"
+    >
+      <h1 class="text-4xl font-bold text-center w-96 text-white animate-pulse">
+        Lovkinje su pobijedile!
+      </h1>
+    </div>
   {:else}
     <div
       class="flex flex-col h-screen items-center justify-center bg-slate-500"
@@ -93,6 +101,44 @@
       {/each}
     </div>
   {/if}
+{:else if gameState > 2}
+  <div class="bg-slate-800">
+    <div
+      class="flex flex-col h-screen items-center justify-center animate-fadeIn"
+    >
+      <div
+        class="flex flex-row h-48 items-center justify-center border-8 border-solid border-white rounded-2xl w-5/6"
+      >
+        {#each Array(finalChaseSteps).fill(0) as item, i}
+          {#if finalChaseSteps == 1}
+            <div
+              class="bg-gradient-to-b from-question-contestant-popout-start to-question-contestant-popout-end h-44 border-black rounded-md rounded-br-md flex-auto"
+            >
+              {i + 1}
+            </div>
+          {:else if i == 0}
+            <div
+              class="bg-gradient-to-b from-question-bg-start to-question-bg-end h-44 rounded-tl-md rounded-bl-md flex-auto"
+            >
+              {i + 1}
+            </div>
+          {:else if i == finalChaseSteps - 1}
+            <div
+              class="bg-gradient-to-b from-question-contestant-popout-start to-question-contestant-popout-end h-44 border-l-8 border-black rounded-tr-md rounded-br-md flex-auto"
+            >
+              {i + 1}
+            </div>
+          {:else}
+            <div
+              class="bg-gradient-to-b from-question-bg-start to-question-bg-end h-44 border-l-8 border-black flex-auto"
+            >
+              {i + 1}
+            </div>
+          {/if}
+        {/each}
+      </div>
+    </div>
+  </div>
 {:else}
   <p>Loading...</p>
 {/if}

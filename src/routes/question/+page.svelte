@@ -63,7 +63,9 @@
       label = document.getElementById(elementToTarget)!;
       label.className = baseAnswerTrackClass;
     }
+
   });
+
 </script>
 
 {#if gameState === -1}
@@ -90,7 +92,7 @@
           {#if contestantAnswer == true}
             <div
               class="flex flex-col justify-center border-2 border-solid border-white rounded-md rounded-b-none text-center text-white text-3xl w-24 h-12 bg-gradient-to-b from-question-contestant-popout-start to-question-contestant-popout-end animate-slideIn z-0"
-            >
+              >
               TIM {gameState + 1}
             </div>
           {:else}
@@ -137,4 +139,15 @@
       </div>
     </div>
   {/if}
+{:else if gameState > 2}
+<div
+    class="flex flex-col h-screen items-center justify-center bg-board-empty"
+  >
+    <h1 class="text-3xl font-bold text-center w-96 text-white">
+      CLOSE THIS PANEL
+    </h1>
+    <h1 class="text-3xl text-center w-96 text-white">
+      This panel is no longer required.
+    </h1>
+  </div>
 {/if}
