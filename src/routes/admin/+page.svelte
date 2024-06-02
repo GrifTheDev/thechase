@@ -20,6 +20,10 @@
   let question = "";
   let contestantAnswer = false;
   let chaserAnswer = false;
+  let chaserAnswerValue = "";
+  let contestantAnswerValue = "";
+  let answerSheet: any = {};
+  let advanceQuestionShowLabel: any = {1: "Show Contestant Answer", 2: "Show Correct Answer", 3: "Show Chaser Answer", 4: "Next Question"}
 
   const { db } = getDB();
 
@@ -37,6 +41,10 @@
     question = doc1.data()!.currentQuestion.question;
     contestantAnswer = doc1.data()!.contestantAnswer;
     chaserAnswer = doc1.data()!.chaserAnswer;
+    chaserAnswerValue = doc1.data()!.chaserAnswerValue;
+    contestantAnswerValue = doc1.data()!.contestantAnswerValue;
+
+    answerSheet = { A: answerA, B: answerB, C: answerC };
   });
 </script>
 
@@ -149,10 +157,17 @@
     <h2 class="text-2xl text-white font-bold">Answer States</h2>
     <div class="flex flex-row items-center">
       {#if contestantAnswer == true}
-        <div
-          class="border-2 border-solid border-white rounded-md text-center text-white text-3xl w-24 h-10 bg-gradient-to-b from-question-contestant-popout-start to-question-contestant-popout-end"
-        >
-          TIM
+        <div class="flex flex-col items-center">
+          <div
+            class="border-2 border-solid border-white rounded-md text-center text-white text-3xl w-24 h-10 bg-gradient-to-b from-question-contestant-popout-start to-question-contestant-popout-end"
+          >
+            TIM
+          </div>
+          <p class="text-white">
+            <span class="font-bold">Answered: </span>{answerSheet[
+              contestantAnswerValue
+            ]}
+          </p>
         </div>
       {:else}
         <div
@@ -163,19 +178,38 @@
       {/if}
 
       {#if chaserAnswer == true}
-        <div
-          class="ml-20 p-1/5 border-2 border-solid border-white rounded-md text-center text-white text-3xl w-28 h-10 bg-gradient-to-b from-question-chaser-popout-start to-question-chaser-popout-end"
-        >
-          LOVAC
+        <div class="flex flex-col items-center">
+          <div
+            class="ml-20 p-1/5 border-2 border-solid border-white rounded-md text-center text-white text-3xl w-28 h-10 bg-gradient-to-b from-question-chaser-popout-start to-question-chaser-popout-end"
+          >
+            LOVAC
+          </div>
+          <p class="text-white text-center ml-20">
+            <span class="font-bold">Answered: </span>{answerSheet[
+              chaserAnswerValue
+            ]}
+          </p>
         </div>
       {:else}
         <div
           class="ml-20 border-2 border-solid border-white rounded-md text-center text-white text-3xl w-28 h-10 p-1/5"
         >
-        LOVAC
+          LOVAC
         </div>
       {/if}
     </div>
+
+    {#if contestantAnswer == true && chaserAnswer == true}
+    <h2 class="text-2xl text-white font-bold">Advance Answer Show</h2>
+    <div class="flex flex-row items-center"> 
+      <button
+          class="border border-white text-white rounded-md p-1"
+          on:click={async () => {
+            changeQuestionState(questionState+1);
+          }}>{advanceQuestionShowLabel[questionState]}</button
+        >
+    </div>
+    {/if}
   </div>
 {:else}
   <p>Loading...</p>

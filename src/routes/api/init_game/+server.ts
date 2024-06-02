@@ -3,7 +3,7 @@ import { readDocData } from "$lib/database.js";
 //import { json } from "@sveltejs/kit" return json(a+b)
 
 /** @type {import('./$types').RequestHandler} */
-export async function POST({request}) {
+export async function POST({}) {
     /* const testData = await readDocData("gameIDs", "hziydQCTfw7b")
     console.log(testData) */
    /*  const { firstGroupName, secondGroupName, thirdGroupName } = await request.json()

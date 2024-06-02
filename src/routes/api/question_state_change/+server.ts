@@ -23,12 +23,10 @@ export const POST: RequestHandler = async({ request }) => {
         question: question,
       },
     });
-  } else if (newState === 0) {
+  } else {
     await updateDocData("gameIDs", PUBLIC_GAMEID, {
       questionState: newState,
     });
-  } else {
-    return new Response(JSON.stringify({ code: 400, message: "Bad Request (Malformed)" }));
   }
 
   return new Response(JSON.stringify({ code: 200, message: "Success" }));

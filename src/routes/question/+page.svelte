@@ -2,6 +2,7 @@
   import { doc, onSnapshot } from "@firebase/firestore";
   import { getDB } from "$lib/firebase";
   import { PUBLIC_GAMEID } from "$env/static/public";
+  import { browser } from "$app/environment";
 
   let gameState = -2;
   let questionState = -1;
@@ -13,7 +14,10 @@
   let question = "";
   let contestantAnswer = false;
   let chaserAnswer = false;
-
+  let baseAnswerLabelShowClass = "flex flex-col justify-center border-2 border-solid border-white rounded-md rounded-t-none text-center text-white text-3xl w-1/3 h-12 " // bg-gradient-to-b from-question-answer-popout-start to-question-answer-popout-end
+  let chaserAnswerValue = "";
+  let contestantAnswerValue = "";
+  let label
   const { db } = getDB();
 
   onSnapshot(doc(db, "gameIDs", PUBLIC_GAMEID), (doc1) => {
@@ -27,6 +31,18 @@
     question = doc1.data()!.currentQuestion.question;
     contestantAnswer = doc1.data()!.contestantAnswer;
     chaserAnswer = doc1.data()!.chaserAnswer;
+    chaserAnswerValue = doc1.data()!.chaserAnswerValue;
+    contestantAnswerValue = doc1.data()!.contestantAnswerValue;
+
+    if (questionState == 2 && browser) {
+      let elementToTarget = "labelAnswer" + contestantAnswerValue
+      label = document.getElementById(elementToTarget)!
+      label.className = baseAnswerLabelShowClass + "bg-gradient-to-b from-question-contestant-popout-start to-question-contestant-popout-end"
+    } else if (questionState == 3 && browser) {
+      let elementToTarget = "labelAnswer" + correctAnswer
+      label = document.getElementById(elementToTarget)!
+      label.className = baseAnswerLabelShowClass + "bg-gradient-to-b from-label-correct-answer-start to-label-correct-answer-end"
+    }
   });
 </script>
 
@@ -79,16 +95,19 @@
       </div>
       <div class="flex flex-row items-start w-3/4 justify-between space-x-3">
         <div
+          id="labelAnswerA"
           class="flex flex-col justify-center border-2 border-solid border-white rounded-md rounded-t-none text-center text-white text-3xl w-1/3 h-12 bg-gradient-to-b from-question-answer-popout-start to-question-answer-popout-end"
         >
           A {answerA}
         </div>
         <div
+          id="labelAnswerB"
           class="flex flex-col justify-center border-2 border-solid border-white rounded-md rounded-t-none text-center text-white text-3xl w-1/3 h-12 bg-gradient-to-b from-question-answer-popout-start to-question-answer-popout-end"
         >
           B {answerB}
         </div>
         <div
+          id="labelAnswerC"
           class="flex flex-col justify-center border-2 border-solid border-white rounded-md rounded-t-none text-center text-white text-3xl w-1/3 h-12 bg-gradient-to-b from-question-answer-popout-start to-question-answer-popout-end"
         >
           C {answerC}

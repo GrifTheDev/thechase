@@ -15,6 +15,8 @@ export default {
         "question-chaser-popout-end": "#e8090c",
         "question-answer-popout-start": "#52667a",
         "question-answer-popout-end": "#11253a",
+        "label-correct-answer-start": "#34eb58",
+        "label-correct-answer-end": "#125711"
       },
       keyframes: {
         slideIn: {

@@ -14,6 +14,8 @@
   let question = "";
   let contestantAnswer = false;
   let chaserAnswer = false;
+  let answerSheet: any = {}
+  let contestantAnswerValue = ""
 
   const { db } = getDB();
 
@@ -28,6 +30,9 @@
     question = doc1.data()!.currentQuestion.question;
     contestantAnswer = doc1.data()!.contestantAnswer;
     chaserAnswer = doc1.data()!.chaserAnswer;
+    contestantAnswerValue = doc1.data()!.contestantAnswerValue;
+
+    answerSheet = {A: answerA, B: answerB, C: answerC}
   });
 </script>
 
@@ -72,7 +77,14 @@
         >{answerC}</button
       >
       {:else}
-        <p>You have submitted your answer.</p>
+      <div class="flex flex-col h-screen items-center justify-center">
+        <h1 class="text-3xl font-bold text-center w-96 text-white">
+          ANSWER SUBMITTED
+        </h1>
+        <h1 class="text-3xl text-center w-96 text-white">
+          Your answer: {answerSheet[contestantAnswerValue]}
+        </h1>
+      </div>
     {/if}
   {/if}
 </div>
