@@ -15,7 +15,7 @@
   let remainder = -1;
   let chaserVictory = false;
   let contestantVictory = false;
-  let finalChaseSteps = 25;
+  let finalChaseSteps = 0;
 
   onSnapshot(doc(db, "gameIDs", PUBLIC_GAMEID), (doc1) => {
     //console.log(doc1.data());
@@ -25,6 +25,7 @@
     remainder = Number(PUBLIC_MAX_BOARD_LEN) - countContestant;
     chaserVictory = doc1.data()!.chaserVictory;
     contestantVictory = doc1.data()!.contestantVictory;
+    finalChaseSteps = doc1.data()!.finalCSteps
     /*  console.log(gameState, countContestant, countChaser, remainder);
     console.log(countContestant - countChaser); */
   });
@@ -120,19 +121,25 @@
             <div
               class="bg-gradient-to-b from-question-bg-start to-question-bg-end h-44 rounded-tl-md rounded-bl-md flex-auto"
             >
+            <div class="text-clip flex flex-1 h-44 items-center justify-center text-white font-bold text-8xl">
               {i + 1}
+            </div>
             </div>
           {:else if i == finalChaseSteps - 1}
             <div
               class="bg-gradient-to-b from-question-contestant-popout-start to-question-contestant-popout-end h-44 border-l-8 border-black rounded-tr-md rounded-br-md flex-auto"
             >
+            <div class="text-clip flex flex-1 h-44 items-center justify-center text-white font-bold text-8xl">
               {i + 1}
+            </div>
             </div>
           {:else}
             <div
-              class="bg-gradient-to-b from-question-bg-start to-question-bg-end h-44 border-l-8 border-black flex-auto"
+              class="text-clip bg-gradient-to-b from-question-bg-start to-question-bg-end h-44 border-l-8 border-black flex-auto"
             >
+            <p class="text-clip flex flex-1 h-44 items-center justify-center text-white font-bold text-xl">
               {i + 1}
+            </p>
             </div>
           {/if}
         {/each}

@@ -7,6 +7,7 @@
     changeGameState,
     changeQuestionState,
     changeSlideOut,
+    changeStepContestantFC,
     setChaserPos,
     setContestantPos,
   } from "$lib/utils";
@@ -34,6 +35,7 @@
   let questionSlidOut = false;
   let chaserVictory = false;
   let contestantVictory = false;
+  let finalContestantSteps = 0
 
   const { db } = getDB();
 
@@ -56,6 +58,7 @@
     questionSlidOut = doc1.data()!.questionSlidOut;
     chaserVictory = doc1.data()!.chaserVictory;
     contestantVictory = doc1.data()!.contestantVictory;
+    finalContestantSteps = doc1.data()!.finalCSteps
 
     answerSheet = { A: answerA, B: answerB, C: answerC };
   });
@@ -241,7 +244,57 @@
     {/if}
     {/if}
   </div>
-  
+{:else if gameState == 3}
+<div class="flex flex-col h-screen items-center bg-stone-500">
+  <h1 class="text-4xl text-center font-bold w-100 text-white">
+    Final Chase ({gameState == 3 ? "Contestants" : "Chaser"}) - Admin Dashboard
+  </h1>
+  <div class="w-screen h-3"></div>
+  <!-- Devider -->
+  <div
+  class="flex flex-col w-screen justify-center px-32 border-2 border-white rounded-xl"
+>
+  <h2 class="text-2xl text-white text-center font-bold">
+    Question Controls
+  </h2>
+  <div class="flex flex-row justify-center text-center">
+    <p class="text-white text-xl">
+      <span class="font-bold">Current Question: </span>{question}
+    </p>
+  </div>
+  <div class="flex flex-row justify-center">
+    <p class="text-white text-xl">
+      <span class="font-bold">Correct Answer: </span>{answerSheet[correctAnswer]}
+    </p>
+  </div>
+  <div class="flex flex-row justify-center">
+    <p class="text-white text-xl">
+      <span class="font-bold">Question Difficulty: </span>{difficulty}
+    </p>
+  </div>
+  <!-- Devider -->
+  <div class="w-screen h-3"></div>
+  <div class="flex flex-col items-center">
+      <h2 class="text-2xl text-white text-center font-bold">
+        Map Controls
+      </h2>
+      <p class="text-white">Current step: {finalContestantSteps}</p>
+      <button
+        class="border border-white text-white rounded-md p-1"
+        on:click={async () => {
+          changeStepContestantFC(1);
+        }}>Advance Step</button
+      >
+      <div class="w-screen h-3"></div>
+      <button
+        class="border border-red-600 text-white rounded-md p-1"
+        on:click={async () => {
+          changeStepContestantFC(-1);
+        }}>Back Step</button
+      >
+  </div>
+</div>
+</div>
 {:else}
   <p>Loading...</p>
 {/if}

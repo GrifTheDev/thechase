@@ -116,6 +116,23 @@ async function advanceGameNextTeam() {
   });
 }
 
+async function changeStepContestantFC(newSteps: number) {
+  await fetch("/api/change_cont_step_fc", {
+    method: "POST",
+    body: JSON.stringify({
+      // TODO: Delegate this behaviour to env. I know I wrote that I will add auth later but it feels wrong to have such an important path exposed with no auth.
+      newSteps: newSteps,
+    }),
+  });
+
+  await fetch("/api/question_state_change", {
+    method: "POST",
+    body: JSON.stringify({
+      newState: 1,
+    }),
+  });
+}
+
 export {
   changeGameState,
   setContestantPos,
@@ -124,5 +141,6 @@ export {
   submitContestantAnswer,
   submitChaserAnswer,
   changeSlideOut,
-  advanceGameNextTeam
+  advanceGameNextTeam,
+  changeStepContestantFC
 };
