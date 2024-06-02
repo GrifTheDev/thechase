@@ -1,10 +1,11 @@
-import { updateDocData } from "$lib/database.js";
-import { PUBLIC_GAMEID } from "$env/static/public";
 import { questionList } from "$lib/assets/questions";
+import { log } from "$lib/logger";
+import { readDocData, updateDocData } from "$lib/database.js";
+import { PUBLIC_GAMEID } from "$env/static/public";
+import type { RequestHandler } from "./$types";
 //import { json } from "@sveltejs/kit" return json(a+b)
 
-/** @type {import('./$types').RequestHandler} */
-export async function POST({ request }) {
+export const POST: RequestHandler = async({ request }) => {
   const { newState } = await request.json();
 
   if (newState === 1) {

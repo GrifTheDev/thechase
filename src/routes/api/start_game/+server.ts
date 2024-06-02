@@ -2,7 +2,7 @@ import { log } from "$lib/logger.js";
 import { readDocData } from "$lib/database.js";
 //import { json } from "@sveltejs/kit" return json(a+b)
 
-/** @type {import('./$types').RequestHandler} */
+// @ts-ignore
 export async function POST({ request, route }) {
     /* const { gameId } = await request.json()
     log({message: `gameId - ${gameId}`, level: 0, apiRoute: route.id})
@@ -16,3 +16,4 @@ export async function POST({ request, route }) {
     
     return new Response("1")
 } 
+

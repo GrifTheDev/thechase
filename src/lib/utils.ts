@@ -43,4 +43,14 @@ async function changeQuestionState(newState: number) {
   });
 }
 
-export {changeGameState, setContestantPos, setChaserPos, changeQuestionState}
+async function submitContestantAnswer(answer: string) {
+  if (answer.length > 1 || !answer.includes("ABC")) return {code: 400, message: "Answer must be a string value equal to A, B or C."}
+
+  // TODO: Since this is gonna be a one-off school thing, no auth is ever required. However, if this were to be used in a more serious context, adding an API SECRET is important.
+  await fetch("/api/submit_contestant_answer", {
+    method: "POST",
+    body: JSON.stringify({contestantAnswer: answer})
+  })
+}
+
+export {changeGameState, setContestantPos, setChaserPos, changeQuestionState, submitContestantAnswer}
