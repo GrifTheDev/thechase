@@ -9,8 +9,9 @@ export const POST: RequestHandler = async({ request }) => {
   const { newState } = await request.json();
 
   if (newState === 1) {
-    const { question, answerA, answerB, answerC, correctAnswer, difficulty } =
+    const { id, question, answerA, answerB, answerC, correctAnswer, difficulty } =
       questionList[Math.floor(Math.random() * questionList.length)];
+    
 
     await updateDocData("gameIDs", PUBLIC_GAMEID, {
       questionState: newState,
@@ -21,6 +22,7 @@ export const POST: RequestHandler = async({ request }) => {
         correctAnswer: correctAnswer,
         difficulty: difficulty,
         question: question,
+        id: id
       },
     });
   } else {
