@@ -22,6 +22,7 @@ export const POST: RequestHandler = async({ request }) => {
     countChaser: 0,
     countContestant: 2,
     gameState: gameState + 1,
+    timerRun: false,
     questionSlidOut: false,
     questionState: 0
   });

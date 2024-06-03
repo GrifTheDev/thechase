@@ -9,11 +9,19 @@ export const POST: RequestHandler = async ({ request }) => {
   const { newSteps } = await request.json();
   const currentData = await readDocData("gameIDs", PUBLIC_GAMEID);
   // @ts-ignore
-  const { finalChsrSteps } = currentData;
+  const { finalChsrSteps, finalCSteps } = currentData;
+  if (finalCSteps == (finalChsrSteps) + 1) {
+    await updateDocData("gameIDs", PUBLIC_GAMEID, {
+        finalChsrSteps: finalChsrSteps + newSteps,
+        chaserVictory: true
+      });
+  } else {
+    await updateDocData("gameIDs", PUBLIC_GAMEID, {
+        finalChsrSteps: finalChsrSteps + newSteps,
+      });
+  }
 
-  await updateDocData("gameIDs", PUBLIC_GAMEID, {
-    finalChsrSteps: finalChsrSteps + newSteps,
-  });
+  
 
   return new Response(JSON.stringify({ code: 200, message: "Success" }));
 };

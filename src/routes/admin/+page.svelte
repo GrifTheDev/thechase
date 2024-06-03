@@ -40,6 +40,7 @@
   let contestantVictory = false;
   let finalContestantSteps = 0
   let finalChaseTComplete = false
+  let finalChaserSteps = 0
 
   const { db } = getDB();
 
@@ -64,6 +65,7 @@
     contestantVictory = doc1.data()!.contestantVictory;
     finalContestantSteps = doc1.data()!.finalCSteps
     finalChaseTComplete = doc1.data()!.finalChaseTComplete
+    finalChaserSteps = doc1.data()!.finalChsrSteps;
 
     answerSheet = { A: answerA, B: answerB, C: answerC };
   });
@@ -364,7 +366,7 @@
     <h2 class="text-2xl text-white text-center font-bold">
       Map Controls
     </h2>
-    <p class="text-white">Current step: {finalContestantSteps}</p>
+    <p class="text-white">Current step: {finalChaserSteps}</p>
     <button
       class="border border-white text-white rounded-md p-1"
       on:click={async () => {

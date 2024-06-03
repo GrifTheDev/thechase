@@ -44,7 +44,6 @@
       if (timerRun && decreaseTimer == undefined) {
         decreaseTimer = setInterval(() => {
           timer -= 1;
-          console.log(":the" + timer);
           if (Number(timer) <= 0) {
             updateDocData("gameIDs", PUBLIC_GAMEID, {
               finalChaseTComplete: true,
@@ -206,6 +205,15 @@
     </div>
   </div>
 {:else if gameState == 4}
+{#if chaserVictory == true}
+    <div
+      class="flex flex-col h-screen items-center justify-center bg-board-chaser animate-slideIn"
+    >
+      <h1 class="text-4xl font-bold text-center w-96 text-white animate-pulse">
+        Lovkinje su pobijedile!
+      </h1>
+    </div>
+{:else}
   <div class="bg-slate-800">
     <div
       class="flex flex-col h-screen items-center justify-center animate-fadeIn"
@@ -320,6 +328,7 @@
       </div>
     </div>
   </div>
+{/if}
 {:else}
   <p>Loading...</p>
 {/if}
