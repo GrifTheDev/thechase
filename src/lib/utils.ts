@@ -133,6 +133,42 @@ async function changeStepContestantFC(newSteps: number) {
   });
 }
 
+async function changeTimerState(newState: boolean) {
+  await fetch("/api/change_timer_state", {
+    method: "POST",
+    body: JSON.stringify({
+      newState: newState,
+    }),
+  });
+}
+
+async function changeStepChaserFC(newSteps: number) {
+  await fetch("/api/change_chaser_step_fc", {
+    method: "POST",
+    body: JSON.stringify({
+      // TODO: Delegate this behaviour to env. I know I wrote that I will add auth later but it feels wrong to have such an important path exposed with no auth.
+      newSteps: newSteps,
+    }),
+  });
+
+  await fetch("/api/question_state_change", {
+    method: "POST",
+    body: JSON.stringify({
+      newState: 1,
+    }),
+  });
+}
+
+async function advanceToChaserFinal() {
+  await fetch("/api/advance_to_chaser_final", {
+    method: "POST",
+    body: JSON.stringify({
+      // TODO: Delegate this behaviour to env. I know I wrote that I will add auth later but it feels wrong to have such an important path exposed with no auth.
+      auth: "this123is123a123password",
+    }),
+  });
+}
+
 export {
   changeGameState,
   setContestantPos,
@@ -142,5 +178,8 @@ export {
   submitChaserAnswer,
   changeSlideOut,
   advanceGameNextTeam,
-  changeStepContestantFC
+  changeStepContestantFC,
+  changeTimerState,
+  changeStepChaserFC,
+  advanceToChaserFinal
 };

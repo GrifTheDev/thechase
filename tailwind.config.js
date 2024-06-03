@@ -17,6 +17,8 @@ export default {
         "question-answer-popout-end": "#11253a",
         "label-correct-answer-start": "#34eb58",
         "label-correct-answer-end": "#125711",
+        "timer-bg-start": "#1d2737",
+        "timer-bg-end": "#596981"
       },
       keyframes: {
         slideIn: {

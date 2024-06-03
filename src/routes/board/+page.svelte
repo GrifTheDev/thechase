@@ -3,7 +3,7 @@
   import { doc, onSnapshot } from "@firebase/firestore";
   import { getDB } from "$lib/firebase";
   import { PUBLIC_GAMEID, PUBLIC_MAX_BOARD_LEN } from "$env/static/public";
-
+  import { updateDocData } from "$lib/database";
   let apiRes: { err_code: number; err_info: string } | undefined;
   const { db } = getDB();
 
@@ -16,6 +16,12 @@
   let chaserVictory = false;
   let contestantVictory = false;
   let finalChaseSteps = 0;
+  let timerRun = false;
+  let finalChaserSteps = 0;
+  let timerReset = false
+  $: timer = 120;
+
+  let decreaseTimer: any;
 
   onSnapshot(doc(db, "gameIDs", PUBLIC_GAMEID), (doc1) => {
     //console.log(doc1.data());
@@ -25,7 +31,35 @@
     remainder = Number(PUBLIC_MAX_BOARD_LEN) - countContestant;
     chaserVictory = doc1.data()!.chaserVictory;
     contestantVictory = doc1.data()!.contestantVictory;
-    finalChaseSteps = doc1.data()!.finalCSteps
+    finalChaseSteps = doc1.data()!.finalCSteps;
+    timerRun = doc1.data()!.timerRun;
+    finalChaserSteps = doc1.data()!.finalChsrSteps;
+
+    if (timerReset == false && gameState == 4) {
+      timer = 120
+      timerReset = true
+    }
+    //console.log(timerRun, decreaseTimer == undefined, !timerRun, decreaseTimer != undefined)
+    if (gameState > 2) {
+      if (timerRun && decreaseTimer == undefined) {
+        decreaseTimer = setInterval(() => {
+          timer -= 1;
+          console.log(":the" + timer);
+          if (Number(timer) <= 0) {
+            updateDocData("gameIDs", PUBLIC_GAMEID, {
+              finalChaseTComplete: true,
+              timerRun: false,
+            });
+            clearImmediate(decreaseTimer);
+          }
+        }, 1000);
+        decreaseTimer;
+      } else if (!timerRun && decreaseTimer != undefined) {
+        clearInterval(decreaseTimer);
+        decreaseTimer = undefined;
+      }
+    }
+
     /*  console.log(gameState, countContestant, countChaser, remainder);
     console.log(countContestant - countChaser); */
   });
@@ -102,11 +136,30 @@
       {/each}
     </div>
   {/if}
-{:else if gameState > 2}
+{:else if gameState == 3}
   <div class="bg-slate-800">
     <div
       class="flex flex-col h-screen items-center justify-center animate-fadeIn"
     >
+      <div class="flex flex-row items-start w-4/5 justify-between">
+        <div
+          class="invisible flex flex-col justify-center border-2 border-solid border-white rounded-md rounded-b-none text-center text-white text-3xl w-24 h-12 bg-gradient-to-b from-question-contestant-popout-start to-question-contestant-popout-end animate-slideIn z-0"
+        >
+          placeholder
+        </div>
+        <div
+          class=" flex flex-col justify-center border-2 border-solid border-white rounded-md rounded-b-none text-center text-white text-3xl w-24 h-12 bg-gradient-to-b from-timer-bg-start to-timer-bg-end"
+        >
+          {Number(timer) % 60 > 0 && Number(timer) % 60 < 10
+            ? Math.floor(Number(timer) / 60) + ":0" + (Number(timer) % 60)
+            : Math.floor(Number(timer) % 60) == 0
+              ? Math.floor(Number(timer) / 60) +
+                ":" +
+                (Number(timer) % 60) +
+                "0"
+              : Math.floor(Number(timer) / 60) + ":" + (Number(timer) % 60)}
+        </div>
+      </div>
       <div
         class="flex flex-row h-48 items-center justify-center border-8 border-solid border-white rounded-2xl w-5/6"
       >
@@ -121,25 +174,146 @@
             <div
               class="bg-gradient-to-b from-question-bg-start to-question-bg-end h-44 rounded-tl-md rounded-bl-md flex-auto"
             >
-            <div class="text-clip flex flex-1 h-44 items-center justify-center text-white font-bold text-8xl">
-              {i + 1}
-            </div>
+              <div
+                class="text-clip flex flex-1 h-44 items-center justify-center text-white font-bold text-8xl"
+              >
+                {i + 1}
+              </div>
             </div>
           {:else if i == finalChaseSteps - 1}
             <div
               class="bg-gradient-to-b from-question-contestant-popout-start to-question-contestant-popout-end h-44 border-l-8 border-black rounded-tr-md rounded-br-md flex-auto"
             >
-            <div class="text-clip flex flex-1 h-44 items-center justify-center text-white font-bold text-8xl">
-              {i + 1}
-            </div>
+              <div
+                class="text-clip flex flex-1 h-44 items-center justify-center text-white font-bold text-8xl"
+              >
+                {i + 1}
+              </div>
             </div>
           {:else}
             <div
               class="text-clip bg-gradient-to-b from-question-bg-start to-question-bg-end h-44 border-l-8 border-black flex-auto"
             >
-            <p class="text-clip flex flex-1 h-44 items-center justify-center text-white font-bold text-xl">
-              {i + 1}
-            </p>
+              <p
+                class="text-clip flex flex-1 h-44 items-center justify-center text-white font-bold text-xl"
+              >
+                {i + 1}
+              </p>
+            </div>
+          {/if}
+        {/each}
+      </div>
+    </div>
+  </div>
+{:else if gameState == 4}
+  <div class="bg-slate-800">
+    <div
+      class="flex flex-col h-screen items-center justify-center animate-fadeIn"
+    >
+      <div class="flex flex-row items-start w-4/5 justify-between">
+        <div
+          class="invisible flex flex-col justify-center border-2 border-solid border-white rounded-md rounded-b-none text-center text-white text-3xl w-24 h-12 bg-gradient-to-b from-question-contestant-popout-start to-question-contestant-popout-end animate-slideIn z-0"
+        >
+          placeholder
+        </div>
+        <div
+          class=" flex flex-col justify-center border-2 border-solid border-white rounded-md rounded-b-none text-center text-white text-3xl w-24 h-12 bg-gradient-to-b from-timer-bg-start to-timer-bg-end"
+        >
+          {Number(timer) % 60 > 0 && Number(timer) % 60 < 10
+            ? Math.floor(Number(timer) / 60) + ":0" + (Number(timer) % 60)
+            : Math.floor(Number(timer) % 60) == 0
+              ? Math.floor(Number(timer) / 60) +
+                ":" +
+                (Number(timer) % 60) +
+                "0"
+              : Math.floor(Number(timer) / 60) + ":" + (Number(timer) % 60)}
+        </div>
+      </div>
+      <div
+        class="flex flex-row h-48 items-center justify-center border-8 border-solid border-white rounded-2xl w-5/6"
+      >
+        {#each Array(finalChaserSteps).fill(0) as item, i}
+          {#if finalChaserSteps == 1}
+            <div
+              class="bg-gradient-to-b from-question-chaser-popout-start to-question-chaser-popout-end h-44 border-black rounded-md rounded-br-md flex-auto"
+            >
+            <div
+            class="text-clip flex flex-1 h-44 items-center justify-center text-white font-bold text-8xl"
+          >
+            {i + 1}
+          </div>
+            </div>
+          {:else if i == 0}
+            <div
+              class="bg-gradient-to-b from-question-chaser-popout-start to-question-chaser-popout-end h-44 rounded-tl-md rounded-bl-md flex-auto"
+            >
+              <div
+                class="text-clip flex flex-1 h-44 items-center justify-center text-white font-bold text-8xl"
+              >
+              </div>
+            </div>
+          {:else if i == finalChaserSteps - 1}
+            <div
+              class="bg-gradient-to-b from-question-chaser-popout-start to-question-chaser-popout-end h-44 border-l-8 border-r-8 border-black rounded-tr-md rounded-br-md flex-auto"
+            >
+              <div
+                class="text-clip flex flex-1 h-44 items-center justify-center text-white font-bold text-8xl"
+              >
+                {i + 1}
+              </div>
+            </div>
+          {:else}
+            <div
+              class="text-clip bg-gradient-to-b from-question-chaser-popout-start to-question-chaser-popout-end border-l-8 border-black flex-auto"
+            >
+              <p
+                class="text-clip flex flex-1 h-44 items-center justify-center text-white font-bold text-xl"
+              >
+              </p>
+            </div>
+          {/if}
+        {/each}
+
+        {#each Array(finalChaseSteps - finalChaserSteps).fill(0) as item, i}
+          {#if finalChaseSteps - finalChaserSteps == 1}
+            <div
+              class="bg-gradient-to-b from-question-contestant-popout-start to-question-contestant-popout-end h-44 border-black rounded-md rounded-br-md flex-auto"
+            >
+            <div
+            class="text-clip flex flex-1 h-44 items-center justify-center text-white text-8xl font-bold"
+          >
+            {i + finalChaserSteps + 1}
+          </div>
+            </div>
+          {:else if i == 0}
+            <div
+              class="bg-gradient-to-b from-question-bg-start to-question-bg-end h-44 rounded-tl-md rounded-bl-md flex-auto"
+            >
+              <div
+                class="text-clip flex flex-1 h-44 items-center justify-center text-white text-xl"
+              >
+                {i + finalChaserSteps + 1}
+              </div>
+            </div>
+          {:else if i == (finalChaseSteps - finalChaserSteps) - 1}
+            <div
+              class="bg-gradient-to-b from-question-contestant-popout-start to-question-contestant-popout-end h-44 border-l-8 border-black rounded-tr-md rounded-br-md flex-auto"
+            >
+              <div
+                class="text-clip flex flex-1 h-44 items-center justify-center text-white font-bold text-8xl"
+              >
+                {i + finalChaserSteps+ 1}
+              </div>
+            </div>
+          {:else}
+            <div
+              class="text-clip bg-gradient-to-b from-question-bg-start to-question-bg-end h-44 border-l-8 border-black flex-auto"
+            >
+              <p
+                class="text-clip flex flex-1 h-44 items-center justify-center text-white font-bold text-xl"
+              >
+                {i + finalChaserSteps + 1}
+              </p>
             </div>
           {/if}
         {/each}
