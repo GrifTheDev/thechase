@@ -86,7 +86,7 @@
       class="flex flex-col h-screen items-center justify-center bg-board-chaser animate-slideIn"
     >
       <h1 class="text-4xl font-bold text-center w-96 text-white animate-pulse">
-        Lovkinje su pobijedile!
+        Lovci su pobijedili!
       </h1>
     </div>
   {:else}
@@ -167,7 +167,7 @@
             <div
               class="bg-gradient-to-b from-question-contestant-popout-start to-question-contestant-popout-end h-44 border-black rounded-md rounded-br-md flex-auto"
             >
-              {i + 1}
+              1
             </div>
           {:else if i == 0}
             <div
@@ -196,7 +196,6 @@
               <p
                 class="text-clip flex flex-1 h-44 items-center justify-center text-white font-bold text-xl"
               >
-                {i + 1}
               </p>
             </div>
           {/if}
@@ -210,7 +209,7 @@
       class="flex flex-col h-screen items-center justify-center bg-board-chaser animate-slideIn"
     >
       <h1 class="text-4xl font-bold text-center w-96 text-white animate-pulse">
-        Lovkinje su pobijedile!
+        Lovci su pobijedili!
       </h1>
     </div>
 {:else}
@@ -243,7 +242,7 @@
         {#each Array(finalChaserSteps).fill(0) as item, i}
           {#if finalChaserSteps == 1}
             <div
-              class="bg-gradient-to-b from-question-chaser-popout-start to-question-chaser-popout-end h-44 border-black rounded-md rounded-br-md flex-auto"
+              class="bg-gradient-to-b from-question-chaser-popout-start to-question-chaser-popout-end h-44 border-r-8 border-black rounded-tl-md rounded-bl-md flex-auto"
             >
             <div
             class="text-clip flex flex-1 h-44 items-center justify-center text-white font-bold text-8xl"
@@ -290,8 +289,9 @@
             <div
             class="text-clip flex flex-1 h-44 items-center justify-center text-white text-8xl font-bold"
           >
-            {i + finalChaserSteps + 1}
+          {finalChaseSteps}
           </div>
+            
             </div>
           {:else if i == 0}
             <div
@@ -300,7 +300,6 @@
               <div
                 class="text-clip flex flex-1 h-44 items-center justify-center text-white text-xl"
               >
-                {i + finalChaserSteps + 1}
               </div>
             </div>
           {:else if i == (finalChaseSteps - finalChaserSteps) - 1}
@@ -320,7 +319,6 @@
               <p
                 class="text-clip flex flex-1 h-44 items-center justify-center text-white font-bold text-xl"
               >
-                {i + finalChaserSteps + 1}
               </p>
             </div>
           {/if}

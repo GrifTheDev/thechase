@@ -10,7 +10,8 @@ export const POST: RequestHandler = async ({ request }) => {
   const currentData = await readDocData("gameIDs", PUBLIC_GAMEID);
   // @ts-ignore
   const { finalChsrSteps, finalCSteps } = currentData;
-  if (finalCSteps == (finalChsrSteps) + 1) {
+  if (finalCSteps == (finalChsrSteps) + newSteps) {
+    console.log(finalCSteps, (finalChsrSteps) + 1)
     await updateDocData("gameIDs", PUBLIC_GAMEID, {
         finalChsrSteps: finalChsrSteps + newSteps,
         chaserVictory: true

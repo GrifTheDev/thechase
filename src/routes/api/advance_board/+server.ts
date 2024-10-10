@@ -1,7 +1,7 @@
 import { questionList } from "$lib/assets/questions";
 import { log } from "$lib/logger";
 import { readDocData, updateDocData } from "$lib/database.js";
-import { PUBLIC_GAMEID } from "$env/static/public";
+import { PUBLIC_GAMEID, PUBLIC_MAX_BOARD_LEN } from "$env/static/public";
 import type { RequestHandler } from "./$types";
 //import { json } from "@sveltejs/kit" return json(a+b)
 
@@ -19,7 +19,7 @@ export const POST: RequestHandler = async ({ request }) => {
     const correctAnswerV = currentQuestion.correctAnswer;
     if (correctAnswerV == contestantAnswerValue) {
 
-      if (countContestant + 1 > 5) {
+      if (countContestant + 1 > PUBLIC_MAX_BOARD_LEN) {
         await updateDocData("gameIDs", PUBLIC_GAMEID, {
             contestantVictory: true,
           });
